@@ -18,7 +18,7 @@ pipeline {
         stage('Build & Test') {
             steps {
                 script {
-                    def appVersion = sh(script: "mvn help:evaluate -Dexpression=project.version -q -DforceStdout", returnStdout: true).trim()
+                    def appVersion = sh(script: "grep -m1 '<version>' pom.xml | sed -E 's/.*<version>(.*)<\\/version>.*/\\1/'", returnStdout: true).trim()
                     def gitCommit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
                     fullTag = "${appVersion}-${env.BUILD_NUMBER}-${gitCommit}"
                     sh "docker build -t ${IMG_NAME}:${fullTag} ."
