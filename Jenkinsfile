@@ -38,7 +38,7 @@ pipeline {
                         envTag = "qa"
                     }
 
-                    withCredentials([usernamePassword(credentialsId: 'aws-ecr-creds', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_ACCESS')]) {
+                    withCredentials([usernamePassword(credentialsId: 'aws-ecr-creds', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                         sh "aws ecr get-login-password --region ${AWS_REG} | docker login --username AWS --password-stdin ${ECR_URL}"
                         
                         def finalEcrTag = "${fullTag}-${envTag}"
