@@ -13,8 +13,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/eureka/**"))
-            .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/eureka/**", "/actuator/**"))
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/actuator/**").permitAll()
+                    .anyRequest().authenticated())
             .httpBasic(withDefaults());
         return http.build();
     }
